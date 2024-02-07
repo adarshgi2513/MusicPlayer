@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Playlist</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <button class="btn btn-success" style="background-color:gray;"><a href="{% url 'home' %}" class="text-dark">home</a></button>
+    <button class="btn btn-success" style="background-color:gray;"><a href="{% url 'form' %}" class="text-dark">ADD SONGS</a></button>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Music Playlist</h2>
+    <form action="{% url 'searchbar' %}" method="get" class="form-inline">
+        {% csrf_token %}
+        <input type="text" name="q" class="from-control" placeholder="search">
+        <button type="submit">search</button>
+    </form>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Image</th>
+                <th>Audio File</th>
+                <th>Audio Link</th>
+                <th>Duration</th>
+                <!-- Add other table headers as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% if song %}
+                {% for dt in song %}
+                    <tr>
+                        <td>{{ dt.title }}</td>
+                        <td>{{ dt.artist }}</td>
+                        <td>
+                            {% if dt.image %}
+                                <img src="{{ dt.image.url }}" alt="Album Cover" style="max-width: 50px; max-height: 50px;">
+                            {% else %}
+                                No Image
+                            {% endif %}
+                        </td>
+                        <td>{{ dt.audio_file }}</td>
+                        <td>
+                            {% if dt.audio_link %}
+                                <a href="{{ dt.audio_link }}" target="_blank">Listen</a>
+                            {% else %}
+                                No Link
+                            {% endif %}
+                        </td>
+                        <td>{{ dt.duration }}</td>
+                        <!-- Add other table data as needed -->
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="7">No songs available</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS and Popper.js (for Bootstrap components that require JavaScript) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8"/>
+   <title>Music Player</title>
+   
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body style="background-color:black;">
+
+<div class="container mt-4">
+
+   <div class="navbar navbar-dark bg-dark">
+      <button class="btn btn-success" style="background-color:gray;"><a href="{% url 'form' %}" class="text-dark">ADD SONGS</a></button>
+      <button class="btn btn-warning ml-3" style="background-color:gray;;"><a href="{% url 'data_views' %}" class="text-dark">Songs_list</a></button>
+      <button class="btn btn-danger ml-3" style="background-color:gray;"><a href="https://www.youtube.com/" class="text-dark" >YouTube</a></button>
+   </div>
+
+   <!-- Music Player-->
+   <div class="row justify-content-center mt-4">
+      <div class="col-md-6">
+         {% for item in page_obj %}
+         <div class="card" style="background-color: black;">
+            <img class="card-img-top" src="{{ item.image.url }}" alt="Album Cover" style="width: 200px; height: 200px; margin-left: 160px;">
+            <div class="card-body">
+               <h3 class="card-title">{{ item.artist }}</h3>
+               <h1 class="card-title" style="color:gray">{{ item.title }}</h1>
+               
+
+               <div class="text-center">
+                  <a class="btn btn-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}">
+                     <i class="fas fa-step-backward fa-2x"></i>
+                  </a>
+                  &nbsp; &nbsp; &nbsp;
+                  <a class="btn btn-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}">
+                     <i class="fas fa-step-forward fa-2x"></i>
+                  </a>
+               </div>
+
+               <div class="audio-player mt-3">
+                  <audio class="fc-media w-100" id="fc-media">
+                     <source src="{% if item.audio_file %}{{ item.audio_file.url }}{% else %}{{ item.audio_link }}{% endif %}" type="audio/mp3"/>
+                  </audio>
+               </div>
+            </div>
+         </div>
+         
+         {% endfor %}
+         
+
+         </div>
+      </div>
+   </div>
+</div>
+
+<!--  Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
